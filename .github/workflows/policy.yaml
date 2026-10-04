@@ -1,0 +1,22 @@
+name: Branch Policy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  job_for_main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This runs only when pushing to MAIN branch"
+
+  job_for_dev_pr:
+    if: github.event_name == 'pull_request' && github.base_ref == 'dev'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This runs only on a Pull Request targeting DEV branch"
