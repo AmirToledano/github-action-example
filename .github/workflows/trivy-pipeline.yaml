@@ -1,0 +1,43 @@
+name: Trivy and Pipeline Skeleton
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  scan-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Install Trivy CLI using Marketplace action
+      - name: Install Trivy CLI
+        uses: ankurk91/install-trivy-cli-action@v2
+        with:
+          version: latest
+
+      # 3. Run Trivy filesystem scan on the local codebase
+      - name: Run Trivy scan
+        run: trivy fs .
+
+      # 4. Pipeline Skeleton steps (using echo as requested)
+      - name: SCM Pull Step
+        run: echo "SCM pull completed."
+
+      - name: Docker Build Step
+        run: echo "Building docker image (mock)..."
+
+      - name: Bandit Scan Step
+        run: echo "Running Bandit security scan..."
+
+      - name: SonarQube Step
+        run: echo "Running SonarQube analysis..."
+
+      - name: Docker Push Step
+        run: echo "Docker push skipped for now."
+
+      - name: Deploy Step
+        run: echo "Deploying application..."
