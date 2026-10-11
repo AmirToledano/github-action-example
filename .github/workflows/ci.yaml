@@ -1,0 +1,20 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Docker Hub
+        run: echo "login"
+        
+      - name: Build Docker Image
+        run: echo "build"
+        
+      - name: Push Docker Image
+        run: echo "push"
