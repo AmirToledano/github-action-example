@@ -34,9 +34,17 @@ jobs:
             ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest
             ${{ vars.DOCKERHUB_USERNAME }}/my-app:${{ github.run_number }}
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ vars.DOCKERHUB_USERNAME }}/my-app:${{ github.run_number }}'
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
+      - name: Install Trivy CLI
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Print Trivy version
+        run: trivy --version
+
+      - name: Scan repository for vulnerabilities
+        run: trivy fs . --severity HIGH,CRITICAL --exit-code 1
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
